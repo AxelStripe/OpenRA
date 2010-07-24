@@ -16,6 +16,8 @@ namespace OpenRA.Traits
 
 	class Roadmap : IGameStarted
 	{
+		List<Node> nodes = new List<Node>();
+
 		public void GameStarted(World w)
 		{
 			/* generate a bunch of random positions, and insert them into a graph */
