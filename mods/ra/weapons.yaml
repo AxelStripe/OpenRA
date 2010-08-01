@@ -198,6 +198,34 @@ Dragon:
 		SmudgeType: Crater
 		Damage: 60
 		ImpactSound: kaboom12
+
+RocketJeepMissile:
+	ROF: 50
+	Range: 7
+	Report: MISSILE6
+	ValidTargets: Ground,Air
+	Burst: 2
+	BurstDelay: 0
+	Missile:
+		Speed: 35
+		Arm: 2
+		High: true
+		Shadow: false
+		Proximity: true
+		Trail: smokey
+		Inaccuracy: 3
+		Image: DRAGON
+		ROT: 5
+		RangeLimit: 55
+	Warhead:
+		Spread: 4
+		Verses: 10%,75%,100%,45%,20%
+		Explosion: med_explosion
+		WaterExplosion: med_splash
+		InfDeath: 3
+		SmudgeType: Crater
+		Damage: 20
+		ImpactSound: kaboom12
 		
 Hellfire:
 	ROF: 60

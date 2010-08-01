@@ -284,6 +284,33 @@ JEEP:
 	RenderUnitTurreted:
 	AutoTarget:
 
+RJEEP:
+	Inherits: ^Vehicle
+	Buildable:
+		BuildPaletteOrder: 30
+		Prerequisites: weap,dome
+		Owner: allies,soviet
+		Cost: 700
+		Description: Rocket Jeep
+		Icon: jeepicon
+		LongDesc: Fast anti-aircraft vehicle.\n  Strong vs Aircraft\n  Weak vs Infantry, Tanks
+	Health:
+		HP: 110
+		Armor: light
+	Mobile:
+		ROT: 10
+		Speed: 12
+	RevealsShroud:
+		Range: 8
+	Turreted:
+		ROT: 20
+	AttackTurreted:
+		PrimaryWeapon: RocketJeepMissile
+		PrimaryOffset: 0,7,0,-5
+		PrimaryLocalOffset: -2,0,25,2,0,-25
+	RenderUnitTurreted:
+	AutoTarget:
+
 APC:
 	Inherits: ^Tank
 	Buildable:

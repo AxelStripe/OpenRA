@@ -327,18 +327,17 @@
     <sequence name="idle" start="0" length="*" />
   </unit>
   <cursor src="mouse" palette="cursor">
-	<sequence name="scroll-t" start="1" x="12" y="12" />
-	<sequence name="scroll-tr" start="2" x="12" y="12" />
-	<sequence name="scroll-r" start="3" x="12" y="12" />
-	<sequence name="scroll-br" start="4" x="12" y="12" />
-	<sequence name="scroll-b" start="5" x="12" y="12" />
-	<sequence name="scroll-bl" start="6" x="12" y="12" />
-	<sequence name="scroll-l" start="7" x="12" y="12" />
-	<sequence name="scroll-tl" start="8" x="12" y="12" />
+    <sequence name="scroll-t" start="1" x="12" y="12" />
+    <sequence name="scroll-tr" start="2" x="12" y="12" />
+    <sequence name="scroll-r" start="3" x="12" y="12" />
+    <sequence name="scroll-br" start="4" x="12" y="12" />
+    <sequence name="scroll-b" start="5" x="12" y="12" />
+    <sequence name="scroll-bl" start="6" x="12" y="12" />
+    <sequence name="scroll-l" start="7" x="12" y="12" />
+    <sequence name="scroll-tl" start="8" x="12" y="12" />
     <sequence name="scroll-blocked" start="124" length="8" />
     <sequence name="select" start="15" length="6" x="12" y="12" />
-
-	<sequence name="default" start="0" />
+    <sequence name="default" start="0" />
     <sequence name="default-minimap" start="80" />
     <sequence name="generic-blocked" start="9" />
     <sequence name="generic-blocked-minimap" start="33" />
@@ -364,8 +363,7 @@
     <sequence name="heal-minimap" start="194" length="1" x="12" y="12" />
     <sequence name="ability" start="82" length="8" x="12" y="12" />
     <sequence name="ability-minimap" start="214" length="8" x="12" y="12" />
-
-	<!-- Want minimap cursors -->
+    <!-- Want minimap cursors -->
     <sequence name="deploy" start="59" length="9" x="12" y="12" />
     <sequence name="deploy-blocked" start="211" length="1" x="12" y="12" />
     <sequence name="goldwrench" start="170" length="24" x="12" y="12" />
@@ -373,7 +371,6 @@
     <sequence name="nuke" start="90" length="7" x="12" y="12" />
     <sequence name="chrono-select" start="97" length="8" x="12" y="12" />
     <sequence name="chrono-target" start="105" length="8" x="12" y="12" />
-
     <sequence name="sell" start="68" length="12" x="12" y="12" />
     <sequence name="sell-blocked" start="119" length="1" x="12" y="12" />
     <sequence name="repair" start="35" length="24" x="12" y="12" />
@@ -954,26 +951,30 @@
   <unit name="msub">
     <sequence name="idle" start="0" facings="16" />
   </unit>
-	<!-- Tesla Tank -->
-	<unit name="ttnk">
-		<sequence name="idle" start="0" facings="32" />
-		<sequence name="spinner" start="32" length="32" />
-	</unit>
-	<!-- Tesla Trooper -->
-	<unit name="shok">
-		<sequence name="stand" start="0" facings="8" />
-		<sequence name="stand2" start="8" facings="8" />
-		<sequence name="run" start="16" length="6" facings="8" />
-		<sequence name="shoot" start="64" length="16" facings="8" />
-		<sequence name="stand3" start="192" length="16" />
-		<sequence name="crawl" start="208" length="4" facings="8" />
-		<sequence name="standup" start="240" length="2" facings="8" />
-		<sequence name="prone-shoot" start="256" length="16" facings="8" />
-		<sequence name="die1" start="416" length="8" />
-		<sequence name="die2" start="424" length="8" />
-		<sequence name="die3" start="432" length="8" />
-		<sequence name="die4" start="440" length="12" />
-		<sequence name="die5" start="452" length="18" />
-		<sequence name="die6" start="0" length="14" src="electro" />
-	</unit>
+  <!-- Tesla Tank -->
+  <unit name="ttnk">
+    <sequence name="idle" start="0" facings="32" />
+    <sequence name="spinner" start="32" length="32" />
+  </unit>
+  <!-- Tesla Trooper -->
+  <unit name="shok">
+    <sequence name="stand" start="0" facings="8" />
+    <sequence name="stand2" start="8" facings="8" />
+    <sequence name="run" start="16" length="6" facings="8" />
+    <sequence name="shoot" start="64" length="16" facings="8" />
+    <sequence name="stand3" start="192" length="16" />
+    <sequence name="crawl" start="208" length="4" facings="8" />
+    <sequence name="standup" start="240" length="2" facings="8" />
+    <sequence name="prone-shoot" start="256" length="16" facings="8" />
+    <sequence name="die1" start="416" length="8" />
+    <sequence name="die2" start="424" length="8" />
+    <sequence name="die3" start="432" length="8" />
+    <sequence name="die4" start="440" length="12" />
+    <sequence name="die5" start="452" length="18" />
+    <sequence name="die6" start="0" length="14" src="electro" />
+  </unit>
+  <unit name="rjeep">
+    <sequence name="idle" start="0" facings="32" src="jeep" />
+    <sequence name="turret" start="0" facings="32" src="ssam" />
+  </unit>
 </sequences>
