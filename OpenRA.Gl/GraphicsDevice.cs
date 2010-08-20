@@ -170,8 +170,6 @@ namespace OpenRA.GlRenderer
 
 		public void Present()
 		{
-			Sdl.SDL_GL_SwapBuffers();
-
 			var mods = MakeModifiers(Sdl.SDL_GetModState());
 			Game.HandleModifierKeys(mods);
             MouseEventArgs pendingMotion = null;
@@ -259,6 +257,7 @@ namespace OpenRA.GlRenderer
                 pendingMotion = null;
             }
 
+			Sdl.SDL_GL_SwapBuffers();
 			CheckGlError();
 		}
 

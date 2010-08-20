@@ -33,13 +33,17 @@ namespace OpenRA.Traits
 				self.World.Map.MapSize.Y / info.BinSize];
 
 			scale = Game.CellSize * info.BinSize;
+
+			for (var j = 0; j <= bins.GetUpperBound(1); j++)
+				for (var i = 0; i <= bins.GetUpperBound(0); i++)
+					bins[i, j] = new List<Actor>();
 		}
 
 		public void Tick(Actor self)
 		{
 			for (var j = 0; j <= bins.GetUpperBound(1); j++)
 				for (var i = 0; i <= bins.GetUpperBound(0); i++)
-					bins[i, j] = new List<Actor>();
+					bins[i, j].Clear();
 
 			foreach (var a in self.World.Actors)
 			{

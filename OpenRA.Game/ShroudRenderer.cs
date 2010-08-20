@@ -11,6 +11,7 @@
 using System.Drawing;
 using OpenRA.FileFormats;
 using OpenRA.Graphics;
+using OpenRA.Support;
 
 namespace OpenRA
 {
@@ -132,87 +133,94 @@ namespace OpenRA
 		{
 			if (disabled)
 				return;
-			
-			if (dirty)
+
+			using (new PerfSample("shroud_render"))
 			{
-				dirty = false;
-				for (int i = map.TopLeft.X; i < map.BottomRight.X; i++)
-					for (int j = map.TopLeft.Y; j < map.BottomRight.Y; j++)
-						sprites[i, j] = ChooseShroud(i, j);
-				for (int i = map.TopLeft.X; i < map.BottomRight.X; i++)
-					for (int j = map.TopLeft.Y; j < map.BottomRight.Y; j++)
-						fogSprites[i, j] = ChooseFog(i, j);
-			}
 
-			var clipRect = Bounds.HasValue ? Rectangle.Intersect(Bounds.Value, map.Bounds) : map.Bounds;
-
-			var miny = clipRect.Top;
-			var maxy = clipRect.Bottom;
-			var minx = clipRect.Left;
-			var maxx = clipRect.Right;
-
-			var shroudPalette = "fog";
-
-			for (var j = miny; j < maxy; j++)
-			{
-				var starti = minx;
-				for (var i = minx; i < maxx; i++)
+				if (dirty)
 				{
-					if (fogSprites[i, j] == shadowBits[0x0f])
-						continue;
-
-					if (starti != i)
+					using (new PerfSample("shroud_dirty"))
 					{
-						Game.Renderer.SpriteRenderer.DrawSprite(fogSprites[starti, j],
-						    Game.CellSize * new float2(starti, j),
-						    shroudPalette,
-						    new float2(Game.CellSize * (i - starti), Game.CellSize));
-						starti = i+1;
+						dirty = false;
+						for (int i = map.TopLeft.X; i < map.BottomRight.X; i++)
+							for (int j = map.TopLeft.Y; j < map.BottomRight.Y; j++)
+								sprites[i, j] = ChooseShroud(i, j);
+						for (int i = map.TopLeft.X; i < map.BottomRight.X; i++)
+							for (int j = map.TopLeft.Y; j < map.BottomRight.Y; j++)
+								fogSprites[i, j] = ChooseFog(i, j);
 					}
-
-					Game.Renderer.SpriteRenderer.DrawSprite(fogSprites[i, j],
-						Game.CellSize * new float2(i, j),
-						shroudPalette);
-					starti = i+1;
 				}
 
-				if (starti < maxx)
-					Game.Renderer.SpriteRenderer.DrawSprite(fogSprites[starti, j],
-						Game.CellSize * new float2(starti, j),
-						shroudPalette,
-						new float2(Game.CellSize * (maxx - starti), Game.CellSize));
-			}
+				var clipRect = Bounds.HasValue ? Rectangle.Intersect(Bounds.Value, map.Bounds) : map.Bounds;
 
-			shroudPalette = "shroud";
+				var miny = clipRect.Top;
+				var maxy = clipRect.Bottom;
+				var minx = clipRect.Left;
+				var maxx = clipRect.Right;
 
-			for (var j = miny; j < maxy; j++)
-			{
-				var starti = minx;
-				for (var i = minx; i < maxx; i++)
+				var shroudPalette = "fog";
+
+				for (var j = miny; j < maxy; j++)
 				{
-					if (sprites[i, j] == shadowBits[0x0f])
-						continue;
-
-					if (starti != i)
+					var starti = minx;
+					for (var i = minx; i < maxx; i++)
 					{
-						Game.Renderer.SpriteRenderer.DrawSprite(sprites[starti, j],
-							Game.CellSize * new float2(starti, j),
-							shroudPalette,
-							new float2(Game.CellSize * (i - starti), Game.CellSize));
+						if (fogSprites[i, j] == shadowBits[0x0f])
+							continue;
+
+						if (starti != i)
+						{
+							Game.Renderer.SpriteRenderer.DrawSprite(fogSprites[starti, j],
+								Game.CellSize * new float2(starti, j),
+								shroudPalette,
+								new float2(Game.CellSize * (i - starti), Game.CellSize));
+							starti = i + 1;
+						}
+
+						Game.Renderer.SpriteRenderer.DrawSprite(fogSprites[i, j],
+							Game.CellSize * new float2(i, j),
+							shroudPalette);
 						starti = i + 1;
 					}
 
-					Game.Renderer.SpriteRenderer.DrawSprite(sprites[i, j],
-						Game.CellSize * new float2(i, j),
-						shroudPalette);
-					starti = i + 1;
+					if (starti < maxx)
+						Game.Renderer.SpriteRenderer.DrawSprite(fogSprites[starti, j],
+							Game.CellSize * new float2(starti, j),
+							shroudPalette,
+							new float2(Game.CellSize * (maxx - starti), Game.CellSize));
 				}
 
-				if (starti < maxx)
-					Game.Renderer.SpriteRenderer.DrawSprite(sprites[starti, j],
-						Game.CellSize * new float2(starti, j),
-						shroudPalette,
-						new float2(Game.CellSize * (maxx - starti), Game.CellSize));
+				shroudPalette = "shroud";
+
+				for (var j = miny; j < maxy; j++)
+				{
+					var starti = minx;
+					for (var i = minx; i < maxx; i++)
+					{
+						if (sprites[i, j] == shadowBits[0x0f])
+							continue;
+
+						if (starti != i)
+						{
+							Game.Renderer.SpriteRenderer.DrawSprite(sprites[starti, j],
+								Game.CellSize * new float2(starti, j),
+								shroudPalette,
+								new float2(Game.CellSize * (i - starti), Game.CellSize));
+							starti = i + 1;
+						}
+
+						Game.Renderer.SpriteRenderer.DrawSprite(sprites[i, j],
+							Game.CellSize * new float2(i, j),
+							shroudPalette);
+						starti = i + 1;
+					}
+
+					if (starti < maxx)
+						Game.Renderer.SpriteRenderer.DrawSprite(sprites[starti, j],
+							Game.CellSize * new float2(starti, j),
+							shroudPalette,
+							new float2(Game.CellSize * (maxx - starti), Game.CellSize));
+				}
 			}
 		}
 	}

@@ -104,6 +104,8 @@ namespace OpenRA
 		static ConnectionState lastConnectionState = ConnectionState.PreConnecting;
 		public static int LocalClientId { get { return orderManager.Connection.LocalClientId; } }
 
+		static Stopwatch tickStopwatch = new Stopwatch();
+
 		static void Tick()
 		{
 			if (orderManager.Connection.ConnectionState != lastConnectionState)
@@ -112,10 +114,10 @@ namespace OpenRA
 				ConnectionStateChanged();
 			}
 
-			int t = Environment.TickCount;
-			int dt = t - lastTime;
-			if (dt >= Settings.Game.Timestep)
+			if (tickStopwatch.ElapsedTime() > Settings.Game.Timestep / 1000f)
 			{
+				tickStopwatch.Reset();
+
 				using (new PerfSample("tick_time"))
 				{
 					lastTime += Settings.Game.Timestep;
@@ -141,19 +143,21 @@ namespace OpenRA
 						if (orderManager.FrameNumber == 0)
 							lastTime = Environment.TickCount;
 				}
+
+				using (new PerfSample("render"))
+				{
+					++RenderFrame;
+					viewport.DrawRegions(world);
+					Sound.SetListenerPosition(viewport.Location + .5f * new float2(viewport.Width, viewport.Height));
+				}
 			}
 
-			using (new PerfSample("render"))
-			{
-				++RenderFrame;
-				viewport.DrawRegions(world);
-				Sound.SetListenerPosition(viewport.Location + .5f * new float2(viewport.Width, viewport.Height));
-			}
+			
 
-			PerfHistory.items["render"].Tick();
-			PerfHistory.items["batches"].Tick();
-			PerfHistory.items["text"].Tick();
-			PerfHistory.items["cursor"].Tick();
+	//		PerfHistory.items["render"].Tick();
+//			PerfHistory.items["batches"].Tick();
+//			PerfHistory.items["text"].Tick();
+//			PerfHistory.items["cursor"].Tick();
 
 			MasterServerQuery.Tick();
 		}
@@ -270,14 +274,12 @@ namespace OpenRA
 			modData = new ModData( LobbyInfo.GlobalSettings.Mods );
 			
 			Sound.Initialize();
-			PerfHistory.items["render"].hasNormalTick = false;
-			PerfHistory.items["batches"].hasNormalTick = false;
-			PerfHistory.items["text"].hasNormalTick = false;
-			PerfHistory.items["cursor"].hasNormalTick = false;
-			
+//			PerfHistory.items["render"].hasNormalTick = false;
+//			PerfHistory.items["batches"].hasNormalTick = false;
+//			PerfHistory.items["text"].hasNormalTick = false;
+//			PerfHistory.items["cursor"].hasNormalTick = false;
 			JoinLocal();
 			StartGame(modData.Manifest.ShellmapUid);
-
 			ResetTimer();
 		}
 
