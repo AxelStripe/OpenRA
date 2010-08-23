@@ -16,18 +16,17 @@ using OpenRA.Server;
 
 namespace OpenRA.Widgets.Delegates
 {
-	public class ServerBrowserDelegate : IWidgetDelegate
+	public class JoinServerDelegate : IWidgetDelegate
 	{
 		static List<Widget> GameButtons = new List<Widget>();
 
 		GameServer currentServer = null;
 		Widget ServerTemplate;
 
-		public ServerBrowserDelegate()
+		public JoinServerDelegate()
 		{
 			var r = Widget.RootWidget;
 			var bg = r.GetWidget("JOINSERVER_BG");
-			var dc = r.GetWidget("DIRECTCONNECT_BG");
 
 			MasterServerQuery.OnComplete += games => RefreshServerList(games);
 
@@ -64,7 +63,6 @@ namespace OpenRA.Widgets.Delegates
 				return ret;
 			};
 
-
 			var sl = bg.GetWidget<ListBoxWidget>("SERVER_LIST");
 			ServerTemplate = sl.GetWidget<LabelWidget>("SERVER_TEMPLATE");
 
@@ -91,7 +89,7 @@ namespace OpenRA.Widgets.Delegates
 			{
 				Widget.CloseWindow();
 
-				dc.GetWidget<TextFieldWidget>("SERVER_ADDRESS").Text = Game.Settings.LastServer;
+				r.GetWidget("DIRECTCONNECT_BG").GetWidget<TextFieldWidget>("SERVER_ADDRESS").Text = Game.Settings.LastServer;
 				Widget.OpenWindow("DIRECTCONNECT_BG");
 				return true;
 			};
@@ -122,29 +120,6 @@ namespace OpenRA.Widgets.Delegates
 				Widget.CloseWindow();
 				Game.JoinServer(currentServer.Address.Split(':')[0], int.Parse(currentServer.Address.Split(':')[1]));
 				return true;
-			};
-
-			// Direct Connect
-			dc.GetWidget("JOIN_BUTTON").OnMouseUp = mi =>
-			{
-
-				var address = dc.GetWidget<TextFieldWidget>("SERVER_ADDRESS").Text;
-				var cpts = address.Split(':').ToArray();
-				if (cpts.Length != 2)
-					return true;
-
-				Game.Settings.LastServer = address;
-				Game.Settings.Save();
-
-				Widget.CloseWindow();
-				Game.JoinServer(cpts[0], int.Parse(cpts[1]));
-				return true;
-			};
-
-			dc.GetWidget("CANCEL_BUTTON").OnMouseUp = mi =>
-			{
-				Widget.CloseWindow();
-				return r.GetWidget("MAINMENU_BUTTON_JOIN").OnMouseUp(mi);
 			};
 		}
 

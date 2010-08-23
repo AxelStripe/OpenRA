@@ -95,7 +95,7 @@ Background@CREATESERVER_BG:
 			Bold:True
 Background@JOINSERVER_BG:
 	Id:JOINSERVER_BG
-	Delegate:ServerBrowserDelegate
+	Delegate:JoinServerDelegate
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - HEIGHT)/2
 	Width:700
@@ -247,7 +247,7 @@ Background@JOINSERVER_BG:
 			Bold:True
 Background@DIRECTCONNECT_BG:
 	Id:DIRECTCONNECT_BG
-	Delegate:ServerBrowserDelegate
+	Delegate:DirectConnectDelegate
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - HEIGHT)/2
 	Width:400
@@ -296,7 +296,6 @@ Background@DIRECTCONNECT_BG:
 			Bold:True
 Background@CONNECTION_FAILED_BG:
 	Id:CONNECTION_FAILED_BG
-	Delegate:ConnectionDialogsDelegate
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - HEIGHT)/2
 	Width:450

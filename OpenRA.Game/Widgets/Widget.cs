@@ -34,7 +34,6 @@ namespace OpenRA.Widgets
 		public Rectangle Bounds;
 		public Widget Parent = null;
 
-		static List<string> Delegates = new List<string>();
 		public static Stack<string> WindowList = new Stack<string>();
 		
 		// Common Funcs that most widgets will want
@@ -59,7 +58,6 @@ namespace OpenRA.Widgets
 							rootWidget.AddChild( WidgetLoader.LoadWidget( w ) );
 					
 					rootWidget.Initialize();
-					Widget.InitDelegates();
 				}
 				return rootWidget;
 			}
@@ -133,19 +131,11 @@ namespace OpenRA.Widgets
 								   width,
 								   height);
 
-			// Non-static func definitions
-
-			if (Delegate != null && !Delegates.Contains(Delegate))
-				Delegates.Add(Delegate);
-
 			foreach (var child in Children)
 				child.Initialize();
-		}
-		
-		public static void InitDelegates()
-		{
-			foreach(var d in Delegates)
-				Game.CreateObject<IWidgetDelegate>(d);
+
+			if( Delegate != null )
+				Game.CreateObject<IWidgetDelegate>( Delegate );
 		}
 		
 		public virtual Rectangle EventBounds { get { return RenderBounds; } }
