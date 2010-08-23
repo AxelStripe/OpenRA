@@ -240,6 +240,7 @@
     <Compile Include="Traits\PrimaryBuilding.cs" />
     <Compile Include="Widgets\Delegates\DeveloperModeDelegate.cs" />
     <Compile Include="Widgets\Delegates\DirectConnectDelegate.cs" />
+    <Compile Include="Widgets\WidgetHooks.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">

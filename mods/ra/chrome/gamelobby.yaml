@@ -267,6 +267,7 @@ Background@SERVER_LOBBY:
 			X:(WINDOW_RIGHT - WIDTH)/2 - PARENT_LEFT
 			Y:100	
 			Visible:false
+			Delegate:ColorChooser
 			Children:
 				Button@BUTTON_OK:
 					Id:BUTTON_OK

@@ -31,8 +31,8 @@ namespace OpenRA.Mods.RA
 		public void AdjustPalette(Dictionary<string, Palette> palettes)
 		{
 			palettes["colorpicker"] = new Palette(palettes["colorpicker"],
-			  new PlayerColorRemap(LobbyDelegate.CurrentColorPreview1,
-				  LobbyDelegate.CurrentColorPreview2, SplitPlayerPalette));
+				new PlayerColorRemap(ColorChooser.CurrentColorPreview1,
+					ColorChooser.CurrentColorPreview2, SplitPlayerPalette));
 		}
 	}
 }

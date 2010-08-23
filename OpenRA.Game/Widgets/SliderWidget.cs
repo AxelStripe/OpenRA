@@ -17,7 +17,7 @@ namespace OpenRA.Widgets
 	{
 		public event Action<float> OnChange;
 		public Func<float> GetOffset;
-		public float Offset = 0;
+		public float Offset { get { return GetOffset(); } set { OnChange( value ); } }
 		public int Ticks = 0;
 		public int TrackHeight = 5;
 
@@ -27,20 +27,9 @@ namespace OpenRA.Widgets
 		public SliderWidget()
 			: base()
 		{
-			GetOffset = () => Offset;
-			OnChange = x => Offset = x;
-		}
-
-		public SliderWidget(SliderWidget other)
-			: base(other)
-		{
-			OnChange = other.OnChange;
-			GetOffset = other.GetOffset;
-			Offset = other.Offset;
-			Ticks = other.Ticks;
-			TrackHeight = other.TrackHeight;
-			lastMouseLocation = other.lastMouseLocation;
-			isMoving = other.isMoving;
+			float value = 0;
+			GetOffset = () => value;
+			OnChange = x => value = x;
 		}
 
 		public override bool HandleInputInner(MouseInput mi)
@@ -72,7 +61,7 @@ namespace OpenRA.Widgets
 						}
 						else if (Ticks != 0)
 						{
-							var pos = GetOffset();
+							var pos = Offset;
 
 							// Offset slightly the direction we want to move so we don't get stuck on a tick
 							var delta = 0.001;
@@ -92,7 +81,7 @@ namespace OpenRA.Widgets
 							var thumb = thumbRect;
 							var center = thumb.X + thumb.Width / 2;
 							var newOffset = OffsetBy((mi.Location.X - center) * 1f / (RenderBounds.Width - thumb.Width));
-							if (newOffset != GetOffset())
+							if (newOffset != Offset)
 							{
 								OnChange(newOffset);
 
@@ -127,13 +116,13 @@ namespace OpenRA.Widgets
 
 		float OffsetBy(float amount)
 		{
-			var centerPos = GetOffset() + amount;
+			var centerPos = Offset + amount;
 			if (centerPos < 0) centerPos = 0;
 			if (centerPos > 1) centerPos = 1;
 			return centerPos;
 		}
 
-		public override Widget Clone() { return new SliderWidget(this); }
+		public override Widget Clone() { throw new InvalidOperationException( "cannot clone SliderWidget" ); }
 
 		Rectangle thumbRect
 		{
@@ -141,7 +130,7 @@ namespace OpenRA.Widgets
 			{
 				var width = RenderBounds.Height;
 				var height = RenderBounds.Height;
-				var origin = (int)((RenderBounds.X + width / 2) + GetOffset() * (RenderBounds.Width - width) - width / 2f);
+				var origin = (int)((RenderBounds.X + width / 2) + Offset * (RenderBounds.Width - width) - width / 2f);
 				return new Rectangle(origin, RenderBounds.Y, width, height);
 			}
 		}
@@ -167,6 +156,20 @@ namespace OpenRA.Widgets
 
 			// Thumb
 			WidgetUtils.DrawPanel("dialog2", thumbRect);
+		}
+
+		public override void ApplyHook( string eventName, object self, System.Reflection.MemberInfo member )
+		{
+			switch( eventName )
+			{
+			case "SliderChange":
+				GetOffset = WidgetHooks.HookGet<float>( self, member );
+				OnChange = WidgetHooks.HookSet<float>( self, member );
+				break;
+			default:
+				base.ApplyHook( eventName, self, member );
+				break;
+			}
 		}
 	}
 }

@@ -14,6 +14,7 @@ using System.Drawing;
 using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Graphics;
+using System.Reflection;
 
 namespace OpenRA.Widgets
 {
@@ -29,6 +30,8 @@ namespace OpenRA.Widgets
 		public bool ClickThrough = true;
 		public bool Visible = true;
 		public readonly List<Widget> Children = new List<Widget>();
+
+		public IWidgetDelegate DelegateInstance;
 
 		// Calculated internally
 		public Rectangle Bounds;
@@ -135,7 +138,7 @@ namespace OpenRA.Widgets
 				child.Initialize();
 
 			if( Delegate != null )
-				Game.CreateObject<IWidgetDelegate>( Delegate );
+				DelegateInstance = Game.CreateObject<IWidgetDelegate>( Delegate );
 		}
 		
 		public virtual Rectangle EventBounds { get { return RenderBounds; } }
@@ -341,6 +344,11 @@ namespace OpenRA.Widgets
 		public static void DoDraw(World world)
 		{
 			RootWidget.Draw(world);
+		}
+
+		public virtual void ApplyHook( string eventName, object self, MemberInfo member )
+		{
+			throw new InvalidOperationException( "Widget {0} has no event named {1}".F( GetType(), eventName ) );
 		}
 	}
 
