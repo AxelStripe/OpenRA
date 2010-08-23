@@ -59,7 +59,7 @@ namespace OpenRA.Widgets
 							rootWidget.AddChild( WidgetLoader.LoadWidget( w ) );
 					
 					rootWidget.Initialize();
-					rootWidget.InitDelegates();
+					Widget.InitDelegates();
 				}
 				return rootWidget;
 			}
@@ -142,7 +142,7 @@ namespace OpenRA.Widgets
 				child.Initialize();
 		}
 		
-		public void InitDelegates()
+		public static void InitDelegates()
 		{
 			foreach(var d in Delegates)
 				Game.CreateObject<IWidgetDelegate>(d);
@@ -322,14 +322,14 @@ namespace OpenRA.Widgets
 			return (widget != null)? (T) widget : null;
 		}
 		
-		public void CloseWindow()
+		public static void CloseWindow()
 		{
 			RootWidget.GetWidget(WindowList.Pop()).Visible = false;
 			if (WindowList.Count > 0)
 				RootWidget.GetWidget(WindowList.Peek()).Visible = true;
 		}
 
-		public Widget OpenWindow(string id)
+		public static Widget OpenWindow(string id)
 		{
 			if (WindowList.Count > 0)
 				RootWidget.GetWidget(WindowList.Peek()).Visible = false;
