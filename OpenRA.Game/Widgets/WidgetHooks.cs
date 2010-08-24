@@ -36,6 +36,17 @@ namespace OpenRA.Widgets
 				throw new NotImplementedException();
 			}
 		}
+
+		public static Action<T> HookAction<T>( object self, MemberInfo member )
+		{
+			switch( member.MemberType )
+			{
+			case MemberTypes.Method:
+				return (Action<T>)Delegate.CreateDelegate( typeof( Action<T> ), self, ( (MethodInfo)member ) );
+			default:
+				throw new NotImplementedException();
+			}
+		}
 	}
 
 	public class HookingWidgetDelegate : IWidgetDelegate

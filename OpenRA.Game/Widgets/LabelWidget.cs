@@ -66,5 +66,18 @@ namespace OpenRA.Widgets
 		}
 
 		public override Widget Clone() { return new LabelWidget(this); }
+
+		public override void ApplyHook( string eventName, object self, System.Reflection.MemberInfo member )
+		{
+			switch( eventName )
+			{
+			case "Text":
+				GetText = WidgetHooks.HookGet<string>( self, member );
+				break;
+			default:
+				base.ApplyHook( eventName, self, member );
+				break;
+			}
+		}
 	}
 }

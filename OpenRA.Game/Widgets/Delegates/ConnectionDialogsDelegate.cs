@@ -12,8 +12,15 @@ using OpenRA.Network;
 
 namespace OpenRA.Widgets.Delegates
 {
-	public class ConnectionDialogsDelegate : IWidgetDelegate
+	public class ConnectionDialogsDelegate : HookingWidgetDelegate
 	{
+		[WidgetHook( "Text", "CONNECTING_DESC" )]
+		public string ConnectingText { get { return "Connecting to {0}:{1}...".F( Game.CurrentHost, Game.CurrentPort ); } }
+
+		[WidgetHook( "Text", "CONNECTION_FAILED_DESC" )]
+		public string ConnectionFailedText { get { return "Could not connect to {0}:{1}".F( Game.CurrentHost, Game.CurrentPort ); } }
+		
+
 		public ConnectionDialogsDelegate()
 		{
 			var r = Widget.RootWidget;
@@ -32,12 +39,6 @@ namespace OpenRA.Widgets.Delegates
 				return true;
 			};
 
-			r.GetWidget<LabelWidget>("CONNECTING_DESC").GetText = () =>
-				"Connecting to {0}:{1}...".F(Game.CurrentHost, Game.CurrentPort);
-
-			r.GetWidget<LabelWidget>("CONNECTION_FAILED_DESC").GetText = () =>
-				"Could not connect to {0}:{1}".F(Game.CurrentHost, Game.CurrentPort);
-			
 			Game.ConnectionStateChanged += () =>
 			{
 				Widget.CloseWindow();

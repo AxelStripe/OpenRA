@@ -128,5 +128,21 @@ namespace OpenRA.Widgets
 
 			Game.Renderer.Flush();
 		}
+
+		public override void ApplyHook( string eventName, object self, System.Reflection.MemberInfo member )
+		{
+			switch( eventName )
+			{
+			case "Map":
+				Map = WidgetHooks.HookGet<MapStub>( self, member );
+				break;
+			case "SpawnClick":
+				OnSpawnClick = WidgetHooks.HookAction<int>( self, member );
+				break;
+			default:
+				base.ApplyHook( eventName, self, member );
+				break;
+			}
+		}
 	}
 }

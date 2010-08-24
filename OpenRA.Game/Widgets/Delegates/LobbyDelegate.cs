@@ -16,13 +16,25 @@ using OpenRA.Network;
 
 namespace OpenRA.Widgets.Delegates
 {
-	public class LobbyDelegate : IWidgetDelegate
+	public class LobbyDelegate : HookingWidgetDelegate
 	{
 		Widget Players, LocalPlayerTemplate, RemotePlayerTemplate;
 		
 		Dictionary<string, string> CountryNames;
 		string MapUid;
-		MapStub Map;
+
+		[WidgetHook( "Map", "LOBBY_MAP_PREVIEW" )]
+		public MapStub Map { get; set; }
+
+		[WidgetHook( "SpawnClick", "LOBBY_MAP_PREVIEW" )]
+		public void OnSpawnClick( int sp )
+		{
+			if (Game.LocalClient.State == Session.ClientState.Ready)
+				return;
+			var owned = Game.LobbyInfo.Clients.Any(c => c.SpawnPoint == sp);
+			if (sp == 0 || !owned)
+				Game.IssueOrder(Order.Command("spawn {0}".F(sp)));
+		}
 		
 		public LobbyDelegate()
 		{
@@ -37,14 +49,6 @@ namespace OpenRA.Widgets.Delegates
 
 
 			var mapPreview = lobby.GetWidget<MapPreviewWidget>("LOBBY_MAP_PREVIEW");
-			mapPreview.Map = () => Map;
-			mapPreview.OnSpawnClick = sp =>
-			{
-				if (Game.LocalClient.State == Session.ClientState.Ready) return;
-				var owned = Game.LobbyInfo.Clients.Any(c => c.SpawnPoint == sp);
-				if (sp == 0 || !owned)
-					Game.IssueOrder(Order.Command("spawn {0}".F(sp)));
-			};
 
 			mapPreview.SpawnColors = () =>
 			{
