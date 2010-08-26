@@ -24,7 +24,7 @@ namespace OpenRA
 
 		public ActorInfo( string name, MiniYaml node, Dictionary<string, MiniYaml> allUnits )
 		{
-			var mergedNode = MergeWithParent( node, allUnits ).Nodes;
+			var mergedNode = MergeWithParent( node, allUnits ).NodesDict;
 
 			Name = name;
 			MiniYaml categoryNode;
@@ -39,7 +39,7 @@ namespace OpenRA
 		static MiniYaml GetParent( MiniYaml node, Dictionary<string, MiniYaml> allUnits )
 		{
 			MiniYaml inherits;
-			node.Nodes.TryGetValue( "Inherits", out inherits );
+			node.NodesDict.TryGetValue( "Inherits", out inherits );
 			if( inherits == null || string.IsNullOrEmpty( inherits.Value ) )
 				return null;
 
