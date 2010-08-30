@@ -89,6 +89,7 @@ namespace OpenRA.Traits
 			{
 				this.__fromCell = this.__toCell = init.Get<LocationInit,int2>();
 				AddInfluence();
+				this.CenterLocation = Util.CenterOfCell( fromCell );
 			}
 			
 			this.Facing = init.Contains<FacingInit>() ? init.Get<FacingInit,int>() : info.InitialFacing;
@@ -118,7 +119,7 @@ namespace OpenRA.Traits
 		public void SetPosition(Actor self, int2 cell)
 		{
 			SetLocation( cell, cell );
-			self.CenterLocation = Util.CenterOfCell(fromCell);
+			CenterLocation = Util.CenterOfCell(fromCell);
 		}
 
 		public Order IssueOrder(Actor self, int2 xy, MouseInput mi, Actor underCursor)
@@ -179,6 +180,7 @@ namespace OpenRA.Traits
 		}
 
 		public int2 TopLeft { get { return toCell; } }
+		public float2 CenterLocation { get; set; }
 
 		public virtual IEnumerable<int2> OccupiedCells()
 		{
