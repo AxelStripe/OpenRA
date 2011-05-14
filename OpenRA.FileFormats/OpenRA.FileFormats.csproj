@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -64,9 +64,12 @@
     <Compile Include="Evaluator.cs" />
     <Compile Include="Exts.cs" />
     <Compile Include="FieldLoader.cs" />
+    <Compile Include="Graphics\APNG.cs" />
+    <Compile Include="Graphics\CRC.cs" />
     <Compile Include="Graphics\IGraphicsDevice.cs" />
     <Compile Include="Graphics\IInputHandler.cs" />
     <Compile Include="Graphics\PngLoader.cs" />
+    <Compile Include="Graphics\ShpTSReader.cs" />
     <Compile Include="Graphics\ShpWriter.cs" />
     <Compile Include="Graphics\Vertex.cs" />
     <Compile Include="HttpUtil.cs" />
